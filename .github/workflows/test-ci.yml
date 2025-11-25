@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -30,6 +35,12 @@ jobs:
         env:
           HEADLESS: true
         run: ./gradlew test
+
+#      - name: Upload Test Results
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: test-results
+#          path: build/test-results/test/*.xml
 
       - name: Upload Test Reports
         uses: mikepenz/action-junit-report@v5
