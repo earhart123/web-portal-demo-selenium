@@ -26,7 +26,7 @@ dependencies {
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.8.0'
 
     // Chrome DevTools Protocol (CDP) - Chrome 142 기반(필요시 버전 변경)
-    testImplementation 'org.seleniumhq.selenium:selenium-devtools-v142:4.15.0'
+    // testImplementation 'org.seleniumhq.selenium:selenium-devtools-v142:4.15.0'
 }
 
 test {
