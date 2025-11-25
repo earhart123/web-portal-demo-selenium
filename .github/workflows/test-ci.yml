@@ -30,3 +30,9 @@ jobs:
         env:
           HEADLESS: true
         run: ./gradlew test
+
+      # JUnit XML 결과 업로드
+      - name: Upload JUnit Test Results
+        uses: actions/upload-test-report@v1
+        with:
+          path: build/test-results/test/*.xml
