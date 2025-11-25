@@ -30,7 +30,7 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnit()
     reports {
         junitXml.required.set(true)
         html.required.set(true)
