@@ -22,7 +22,7 @@ public class SecureKeyVerifyPage {
     // ===== 공통 기능 =====
 
     public void open() {
-        driver.get("https://accounts.play2bit.com/member/manage/account");
+        driver.get("https://accounts.webportal.com/member/manage/account");
     }
 
     public String getTitle() {

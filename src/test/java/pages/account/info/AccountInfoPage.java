@@ -33,10 +33,10 @@ public class AccountInfoPage {
     private By timezoneTitle = By.cssSelector(".timezone > em");
     private By timezoneUTC = By.cssSelector(".radio-btn:nth-child(2) > span");
     private By timezoneKorea = By.cssSelector(".radio-btn:nth-child(1) > span");
-    private By modalTitle = By.cssSelector("#Play2bitModal .title");
+    private By modalTitle = By.cssSelector("#WebportalModal .title");
     private By modalText = By.cssSelector(".desc > strong");
-    private By modalBtn = By.cssSelector("#Play2bitModal .btn");
-    private By withdrawBtn = By.linkText("Play2Bit 회원 탈퇴");
+    private By modalBtn = By.cssSelector("#WebportalModal .btn");
+    private By withdrawBtn = By.linkText("Webportal 회원 탈퇴");
 
     public AccountInfoPage(WebDriver driver) {
         this.driver = driver;
@@ -46,7 +46,7 @@ public class AccountInfoPage {
 
     // ===== 공통 기능 =====
     public void open() {
-        driver.get("https://accounts.play2bit.com/member/manage/account/info?countryCode=KR");
+        driver.get("https://accounts.webportal.com/member/manage/account/info?countryCode=KR");
     }
 
     public String getTitle() {

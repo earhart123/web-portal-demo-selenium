@@ -44,7 +44,7 @@ public class AccountSecurityPage {
     // ===== 공통 기능 =====
 
     public void open() {
-        driver.get("https://accounts.play2bit.com/member/manage/security");
+        driver.get("https://accounts.webportal.com/member/manage/security");
     }
 
     public String getTitle() {
