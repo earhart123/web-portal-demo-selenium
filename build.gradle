@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Selenium WebDriver
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.15.0'
+
+    // JUnit4
+    testImplementation 'junit:junit:4.13.2'
+
+    // Hamcrest
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    // WebDriverManager (ChromeDriver 자동 다운로드)
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.8.0'
+
+    // Chrome DevTools Protocol (CDP) - Chrome 142 기반(필요시 버전 변경)
+    testImplementation 'org.seleniumhq.selenium:selenium-devtools-v142:4.15.0'
+}
+
+test {
+    useJUnitPlatform()
+}
