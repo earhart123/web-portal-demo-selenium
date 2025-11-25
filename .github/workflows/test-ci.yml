@@ -37,5 +37,5 @@ jobs:
         with:
           name: Selenium UI Tests
           path: build/test-results/test/*.xml
-          reporter: junit
+          reporter: junit5
           github_token: ${{ secrets.GITHUB_TOKEN }}
