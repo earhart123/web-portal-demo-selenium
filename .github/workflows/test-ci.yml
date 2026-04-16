@@ -37,6 +37,10 @@ jobs:
       - name: Run Gradle Tests (Headless)
         env:
           HEADLESS: true
+          BASE_URL: "https://earhart123.github.io/web-portal-demo-selenium"
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          TEST_SECURITY_KEY: ${{ secrets.TEST_SECURITY_KEY }}
         run: ./gradlew test
 
       - name: List test results
