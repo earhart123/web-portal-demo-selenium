@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GamePortal - 메인</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
+    .navbar { background: #fff; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .navbar .logo { font-size: 20px; font-weight: 700; color: #2d6ef6; }
+    .navbar nav a { margin-left: 24px; text-decoration: none; color: #555; font-size: 14px; }
+    .navbar nav a:hover { color: #2d6ef6; }
+    .user-menu { display: flex; align-items: center; gap: 16px; }
+    .user-menu span { font-size: 14px; color: #333; }
+    .user-menu a { font-size: 13px; color: #2d6ef6; text-decoration: none; }
+    .content { max-width: 900px; margin: 48px auto; padding: 0 24px; }
+    .welcome { font-size: 22px; font-weight: 700; color: #222; margin-bottom: 8px; }
+    .welcome span { color: #2d6ef6; }
+    .sub { font-size: 14px; color: #777; margin-bottom: 32px; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .card .icon { font-size: 32px; margin-bottom: 12px; }
+    .card h3 { font-size: 15px; font-weight: 600; color: #222; margin-bottom: 6px; }
+    .card p { font-size: 13px; color: #888; }
+    .card a { display: inline-block; margin-top: 14px; font-size: 13px; color: #2d6ef6; text-decoration: none; }
+    #main-page { display: block; }
+  </style>
+</head>
+<body>
+<div id="main-page" data-qa="main-page">
+  <div class="navbar">
+    <div class="logo">🎮 GamePortal</div>
+    <nav>
+      <a href="main.html">홈</a>
+      <a href="account-info.html" data-qa="nav-account-info">계정정보</a>
+      <a href="account-security.html" data-qa="nav-account-security">계정보안</a>
+    </nav>
+    <div class="user-menu">
+      <span data-qa="username-display">test@gameportal.com</span>
+      <a href="login.html" data-qa="btn-logout">로그아웃</a>
+    </div>
+  </div>
+  <div class="content">
+    <div class="welcome">안녕하세요, <span>test@gameportal.com</span> 님!</div>
+    <p class="sub">GamePortal에 오신 것을 환영합니다.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">🎮</div>
+        <h3>게임 라이브러리</h3>
+        <p>나의 게임 목록을 확인하세요.</p>
+        <a href="#">게임 보러가기 →</a>
+      </div>
+      <div class="card">
+        <div class="icon">👤</div>
+        <h3>계정 관리</h3>
+        <p>계정 정보와 보안 설정을 관리합니다.</p>
+        <a href="account-info.html" data-qa="link-account-info">계정정보 →</a>
+      </div>
+      <div class="card">
+        <div class="icon">🔒</div>
+        <h3>보안 설정</h3>
+        <p>해외 로그인 및 보안 옵션을 설정합니다.</p>
+        <a href="account-security.html" data-qa="link-account-security">보안설정 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

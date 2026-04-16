@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GamePortal - 회원가입</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .container { background: #fff; padding: 48px 40px; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); width: 440px; }
+    .logo { text-align: center; font-size: 24px; font-weight: 700; color: #2d6ef6; margin-bottom: 24px; }
+    .step-indicator { display: flex; gap: 8px; margin-bottom: 28px; }
+    .step { flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px; }
+    .step.active { background: #2d6ef6; }
+    .step.done { background: #4caf50; }
+    h1 { font-size: 18px; font-weight: 600; color: #222; margin-bottom: 20px; }
+    /* STEP 1 - Terms */
+    .terms-box { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+    .terms-header { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; margin-bottom: 10px; }
+    .terms-item { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 6px 0; border-top: 1px solid #f0f0f0; color: #555; }
+    .terms-item input[type=checkbox] { width: 16px; height: 16px; accent-color: #2d6ef6; cursor: pointer; }
+    .terms-header input[type=checkbox] { width: 18px; height: 18px; accent-color: #2d6ef6; cursor: pointer; }
+    .required-badge { font-size: 11px; color: #e53e3e; margin-left: auto; }
+    .optional-badge { font-size: 11px; color: #888; margin-left: auto; }
+    /* STEP 2 - Info */
+    .field { position: relative; margin-bottom: 16px; }
+    .field label { position: absolute; top: 14px; left: 14px; font-size: 14px; color: #999; pointer-events: none; transition: all 0.2s; }
+    .field input { width: 100%; padding: 20px 14px 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+    .field input:focus { border-color: #2d6ef6; }
+    .field input:focus + label,
+    .field input:not(:placeholder-shown) + label { top: 5px; font-size: 11px; color: #2d6ef6; }
+    .field input::placeholder { color: transparent; }
+    .validation-msg { font-size: 12px; margin-top: 4px; display: none; }
+    .validation-msg.error { color: #e53e3e; display: block; }
+    .validation-msg.success { color: #4caf50; display: block; }
+    .btn-primary { width: 100%; padding: 14px; background: #2d6ef6; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    .btn-primary:hover { background: #1a5ae0; }
+    .btn-primary:disabled { background: #b0c4f8; cursor: not-allowed; }
+    .back-link { display: block; text-align: center; margin-top: 14px; font-size: 13px; color: #2d6ef6; cursor: pointer; text-decoration: none; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .success-box { text-align: center; padding: 16px 0; }
+    .success-box .icon { font-size: 48px; margin-bottom: 12px; }
+    .success-box p { color: #555; font-size: 14px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">🎮 GamePortal</div>
+  <div class="step-indicator">
+    <div class="step active" id="step-dot-1"></div>
+    <div class="step" id="step-dot-2"></div>
+    <div class="step" id="step-dot-3"></div>
+  </div>
+
+  <!-- Step 1: Terms -->
+  <div id="step-terms" class="section active" data-qa="step-terms">
+    <h1>약관 동의</h1>
+    <div class="terms-box">
+      <div class="terms-header">
+        <input type="checkbox" id="agree-all" data-qa="agree-all" />
+        <span>전체 동의</span>
+      </div>
+      <div class="terms-item">
+        <input type="checkbox" id="agree-service" data-qa="agree-service" />
+        <span>서비스 이용약관 동의</span>
+        <span class="required-badge">[필수]</span>
+      </div>
+      <div class="terms-item">
+        <input type="checkbox" id="agree-privacy" data-qa="agree-privacy" />
+        <span>개인정보 수집 및 이용 동의</span>
+        <span class="required-badge">[필수]</span>
+      </div>
+      <div class="terms-item">
+        <input type="checkbox" id="agree-age" data-qa="agree-age" />
+        <span>만 14세 이상 확인</span>
+        <span class="required-badge">[필수]</span>
+      </div>
+      <div class="terms-item">
+        <input type="checkbox" id="agree-marketing" data-qa="agree-marketing" />
+        <span>마케팅 정보 수신 동의</span>
+        <span class="optional-badge">[선택]</span>
+      </div>
+    </div>
+    <button id="btn-terms-next" class="btn-primary" data-qa="btn-terms-next" disabled>다음</button>
+    <a href="login.html" class="back-link">로그인으로 돌아가기</a>
+  </div>
+
+  <!-- Step 2: Info Input -->
+  <div id="step-info" class="section" data-qa="step-info">
+    <h1>정보 입력</h1>
+    <div class="field">
+      <input type="email" id="signup-email" placeholder="이메일" autocomplete="off" data-qa="signup-email" />
+      <label for="signup-email">이메일</label>
+    </div>
+    <p id="email-validation" class="validation-msg"></p>
+    <div class="field">
+      <input type="password" id="signup-password" placeholder="비밀번호" data-qa="signup-password" />
+      <label for="signup-password">비밀번호 (8자 이상, 영문+숫자+특수문자)</label>
+    </div>
+    <p id="password-validation" class="validation-msg"></p>
+    <div class="field">
+      <input type="password" id="signup-password-confirm" placeholder="비밀번호 확인" data-qa="signup-password-confirm" />
+      <label for="signup-password-confirm">비밀번호 확인</label>
+    </div>
+    <p id="password-confirm-validation" class="validation-msg"></p>
+    <div class="field">
+      <input type="text" id="signup-security-key" placeholder="보안키 (6자 이상)" data-qa="signup-security-key" />
+      <label for="signup-security-key">보안키 (6자 이상)</label>
+    </div>
+    <p id="security-key-validation" class="validation-msg"></p>
+    <button id="btn-info-next" class="btn-primary" data-qa="btn-info-submit">가입하기</button>
+    <a class="back-link" id="back-to-terms" data-qa="back-to-terms">이전으로</a>
+  </div>
+
+  <!-- Step 3: Complete -->
+  <div id="step-complete" class="section" data-qa="step-complete">
+    <h1>가입 완료</h1>
+    <div class="success-box">
+      <div class="icon">🎉</div>
+      <p id="signup-complete-message" data-qa="signup-complete-message">GamePortal 회원이 되셨습니다!</p>
+      <button class="btn-primary" onclick="window.location.href='login.html'" data-qa="btn-go-login">로그인하러 가기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function goToStep(n) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.step').forEach((s, i) => {
+      s.classList.remove('active', 'done');
+      if (i + 1 < n) s.classList.add('done');
+      if (i + 1 === n) s.classList.add('active');
+    });
+    if (n === 1) document.getElementById('step-terms').classList.add('active');
+    if (n === 2) document.getElementById('step-info').classList.add('active');
+    if (n === 3) document.getElementById('step-complete').classList.add('active');
+  }
+
+  // Terms logic
+  const required = ['agree-service', 'agree-privacy', 'agree-age'];
+  document.getElementById('agree-all').addEventListener('change', function() {
+    ['agree-service','agree-privacy','agree-age','agree-marketing'].forEach(id => {
+      document.getElementById(id).checked = this.checked;
+    });
+    checkTermsNext();
+  });
+  required.forEach(id => {
+    document.getElementById(id).addEventListener('change', checkTermsNext);
+  });
+  document.getElementById('agree-marketing').addEventListener('change', checkTermsNext);
+  function checkTermsNext() {
+    const allRequired = required.every(id => document.getElementById(id).checked);
+    document.getElementById('btn-terms-next').disabled = !allRequired;
+    const allChecked = ['agree-service','agree-privacy','agree-age','agree-marketing'].every(id => document.getElementById(id).checked);
+    document.getElementById('agree-all').checked = allChecked;
+  }
+  document.getElementById('btn-terms-next').addEventListener('click', () => goToStep(2));
+  document.getElementById('back-to-terms').addEventListener('click', () => goToStep(1));
+
+  // Info validation
+  function validatePassword(p) {
+    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(p);
+  }
+  function validateSecurityKey(k) { return k.length >= 6; }
+
+  document.getElementById('signup-password').addEventListener('input', function() {
+    const el = document.getElementById('password-validation');
+    if (!this.value) { el.className = 'validation-msg'; return; }
+    if (validatePassword(this.value)) {
+      el.textContent = '사용 가능한 비밀번호입니다.'; el.className = 'validation-msg success';
+    } else {
+      el.textContent = '8자 이상, 영문+숫자+특수문자를 포함해야 합니다.'; el.className = 'validation-msg error';
+    }
+  });
+  document.getElementById('signup-security-key').addEventListener('input', function() {
+    const el = document.getElementById('security-key-validation');
+    if (!this.value) { el.className = 'validation-msg'; return; }
+    if (validateSecurityKey(this.value)) {
+      el.textContent = '사용 가능한 보안키입니다.'; el.className = 'validation-msg success';
+    } else {
+      el.textContent = '6자 이상 입력해주세요.'; el.className = 'validation-msg error';
+    }
+  });
+
+  document.getElementById('btn-info-next').addEventListener('click', function() {
+    const email = document.getElementById('signup-email').value;
+    const pw = document.getElementById('signup-password').value;
+    const pwc = document.getElementById('signup-password-confirm').value;
+    const sk = document.getElementById('signup-security-key').value;
+    let valid = true;
+    if (!email || !email.includes('@')) {
+      document.getElementById('email-validation').textContent = '올바른 이메일을 입력해주세요.';
+      document.getElementById('email-validation').className = 'validation-msg error'; valid = false;
+    } else {
+      document.getElementById('email-validation').textContent = '사용 가능한 이메일입니다.';
+      document.getElementById('email-validation').className = 'validation-msg success';
+    }
+    if (!validatePassword(pw)) {
+      document.getElementById('password-validation').textContent = '8자 이상, 영문+숫자+특수문자를 포함해야 합니다.';
+      document.getElementById('password-validation').className = 'validation-msg error'; valid = false;
+    }
+    if (pw !== pwc) {
+      document.getElementById('password-confirm-validation').textContent = '비밀번호가 일치하지 않습니다.';
+      document.getElementById('password-confirm-validation').className = 'validation-msg error'; valid = false;
+    } else if (pwc) {
+      document.getElementById('password-confirm-validation').textContent = '비밀번호가 일치합니다.';
+      document.getElementById('password-confirm-validation').className = 'validation-msg success';
+    }
+    if (!validateSecurityKey(sk)) {
+      document.getElementById('security-key-validation').textContent = '6자 이상 입력해주세요.';
+      document.getElementById('security-key-validation').className = 'validation-msg error'; valid = false;
+    }
+    if (valid) {
+      document.getElementById('signup-complete-message').textContent = email + ' 계정으로 가입이 완료되었습니다!';
+      goToStep(3);
+    }
+  });
+</script>
+</body>
+</html>

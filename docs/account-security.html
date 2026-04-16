@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GamePortal - 계정보안</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
+    .navbar { background: #fff; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .navbar .logo { font-size: 20px; font-weight: 700; color: #2d6ef6; }
+    .navbar nav a { margin-left: 24px; text-decoration: none; color: #555; font-size: 14px; }
+    .navbar nav a:hover, .navbar nav a.active { color: #2d6ef6; font-weight: 600; }
+    .user-menu { display: flex; align-items: center; gap: 16px; }
+    .user-menu span { font-size: 14px; color: #333; }
+    .user-menu a { font-size: 13px; color: #2d6ef6; text-decoration: none; }
+    .content { max-width: 720px; margin: 40px auto; padding: 0 24px; }
+    h1 { font-size: 20px; font-weight: 700; color: #222; margin-bottom: 24px; }
+    .section-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .section-card h2 { font-size: 14px; font-weight: 600; color: #444; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .toggle-info .toggle-label { font-size: 14px; font-weight: 500; color: #222; }
+    .toggle-info .toggle-desc { font-size: 12px; color: #888; margin-top: 3px; max-width: 480px; }
+    .toggle-status-badge { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; margin-top: 6px; display: inline-block; }
+    .toggle-status-badge.allowed { background: #e8f5e9; color: #2e7d32; }
+    .toggle-status-badge.blocked { background: #fce4ec; color: #c62828; }
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: #ccc; border-radius: 24px; transition: 0.3s; }
+    .slider:before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.3s; }
+    input:checked + .slider { background: #2d6ef6; }
+    input:checked + .slider:before { transform: translateX(20px); }
+    .info-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 14px; }
+    .info-label { color: #888; width: 160px; flex-shrink: 0; }
+    .info-value { color: #222; }
+    .login-history { margin-top: 8px; }
+    .history-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+    .history-item:last-child { border-bottom: none; }
+    .history-location { color: #444; }
+    .history-time { color: #999; }
+    .history-badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+    .history-badge.current { background: #e3f2fd; color: #1565c0; }
+    .history-badge.overseas { background: #fff3e0; color: #e65100; }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <div class="logo">🎮 GamePortal</div>
+  <nav>
+    <a href="main.html">홈</a>
+    <a href="account-info.html" data-qa="nav-account-info">계정정보</a>
+    <a href="account-security.html" class="active" data-qa="nav-account-security">계정보안</a>
+  </nav>
+  <div class="user-menu">
+    <span data-qa="username-display">test@gameportal.com</span>
+    <a href="login.html" data-qa="btn-logout">로그아웃</a>
+  </div>
+</div>
+
+<div class="content" data-qa="account-security-page">
+  <h1>계정보안</h1>
+
+  <!-- 해외 로그인 설정 -->
+  <div class="section-card" data-qa="section-overseas-login">
+    <h2>해외 로그인 설정</h2>
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <div class="toggle-label">해외 로그인 허용</div>
+        <div class="toggle-desc">해외에서의 로그인 시도를 허용하거나 차단합니다. 차단 시 해외 IP에서의 로그인이 불가합니다.</div>
+        <span id="overseas-login-status-badge" class="toggle-status-badge blocked" data-qa="overseas-login-status-badge">차단됨</span>
+      </div>
+      <label class="toggle" style="margin-left: 16px;">
+        <input type="checkbox" id="toggle-overseas-login" data-qa="toggle-overseas-login"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <p id="overseas-login-status" data-qa="overseas-login-status" style="font-size:13px;color:#888;display:none;"></p>
+  </div>
+
+  <!-- 최근 로그인 이력 -->
+  <div class="section-card" data-qa="section-login-history">
+    <h2>최근 로그인 이력</h2>
+    <div class="login-history" data-qa="login-history-list">
+      <div class="history-item" data-qa="history-item">
+        <span class="history-location">🇰🇷 서울, 대한민국</span>
+        <span class="history-time">2026-04-16 09:30</span>
+        <span class="history-badge current">현재 세션</span>
+      </div>
+      <div class="history-item" data-qa="history-item">
+        <span class="history-location">🇰🇷 서울, 대한민국</span>
+        <span class="history-time">2026-04-15 18:22</span>
+        <span class="history-badge">정상</span>
+      </div>
+      <div class="history-item" data-qa="history-item">
+        <span class="history-location">🇺🇸 뉴욕, 미국</span>
+        <span class="history-time">2026-04-14 03:11</span>
+        <span class="history-badge overseas">해외</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 비밀번호 변경 -->
+  <div class="section-card" data-qa="section-change-password">
+    <h2>비밀번호 변경</h2>
+    <div style="display:flex;gap:8px;flex-direction:column;max-width:360px;">
+      <input type="password" id="current-password" placeholder="현재 비밀번호" data-qa="current-password"
+        style="padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;"/>
+      <input type="password" id="new-password" placeholder="새 비밀번호" data-qa="new-password"
+        style="padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;"/>
+      <input type="password" id="new-password-confirm" placeholder="새 비밀번호 확인" data-qa="new-password-confirm"
+        style="padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;"/>
+      <button id="btn-change-password" data-qa="btn-change-password"
+        style="padding:10px 18px;background:#2d6ef6;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;">비밀번호 변경</button>
+      <p id="change-password-result" data-qa="change-password-result" style="font-size:13px;display:none;"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Overseas login toggle
+  document.getElementById('toggle-overseas-login').addEventListener('change', function() {
+    const badge = document.getElementById('overseas-login-status-badge');
+    const status = document.getElementById('overseas-login-status');
+    if (this.checked) {
+      badge.textContent = '허용됨';
+      badge.className = 'toggle-status-badge allowed';
+      status.textContent = '해외 로그인이 허용되었습니다.';
+      status.style.color = '#4caf50';
+    } else {
+      badge.textContent = '차단됨';
+      badge.className = 'toggle-status-badge blocked';
+      status.textContent = '해외 로그인이 차단되었습니다.';
+      status.style.color = '#e53e3e';
+    }
+    status.style.display = 'block';
+    setTimeout(() => { status.style.display = 'none'; }, 2000);
+  });
+
+  // Password change
+  document.getElementById('btn-change-password').addEventListener('click', function() {
+    const cur = document.getElementById('current-password').value;
+    const nw = document.getElementById('new-password').value;
+    const nwc = document.getElementById('new-password-confirm').value;
+    const el = document.getElementById('change-password-result');
+    if (!cur || !nw || !nwc) {
+      el.textContent = '모든 항목을 입력해주세요.'; el.style.color = '#e53e3e'; el.style.display = 'block'; return;
+    }
+    if (nw !== nwc) {
+      el.textContent = '새 비밀번호가 일치하지 않습니다.'; el.style.color = '#e53e3e'; el.style.display = 'block'; return;
+    }
+    el.textContent = '비밀번호가 변경되었습니다.'; el.style.color = '#4caf50'; el.style.display = 'block';
+  });
+</script>
+</body>
+</html>

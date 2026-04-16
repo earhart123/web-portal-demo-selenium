@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GamePortal - 계정정보</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; }
+    .navbar { background: #fff; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .navbar .logo { font-size: 20px; font-weight: 700; color: #2d6ef6; }
+    .navbar nav a { margin-left: 24px; text-decoration: none; color: #555; font-size: 14px; }
+    .navbar nav a:hover, .navbar nav a.active { color: #2d6ef6; font-weight: 600; }
+    .user-menu { display: flex; align-items: center; gap: 16px; }
+    .user-menu span { font-size: 14px; color: #333; }
+    .user-menu a { font-size: 13px; color: #2d6ef6; text-decoration: none; }
+    .content { max-width: 720px; margin: 40px auto; padding: 0 24px; }
+    h1 { font-size: 20px; font-weight: 700; color: #222; margin-bottom: 24px; }
+    .section-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .section-card h2 { font-size: 14px; font-weight: 600; color: #444; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
+    .info-row { display: flex; align-items: center; margin-bottom: 12px; font-size: 14px; }
+    .info-label { color: #888; width: 120px; flex-shrink: 0; }
+    .info-value { color: #222; font-weight: 500; }
+    /* Security Key */
+    .security-key-field { display: flex; gap: 8px; }
+    .security-key-field input { flex: 1; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+    .security-key-field input:focus { border-color: #2d6ef6; }
+    .btn-verify { padding: 10px 18px; background: #2d6ef6; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; white-space: nowrap; }
+    .btn-verify:hover { background: #1a5ae0; }
+    .verify-result { font-size: 13px; margin-top: 6px; display: none; }
+    .verify-result.success { color: #4caf50; display: block; }
+    .verify-result.error { color: #e53e3e; display: block; }
+    /* Toggle */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; }
+    .toggle-label { font-size: 14px; color: #444; }
+    .toggle-status { font-size: 12px; color: #888; margin-top: 2px; }
+    .toggle { position: relative; width: 44px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: #ccc; border-radius: 24px; transition: 0.3s; }
+    .slider:before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: 0.3s; }
+    input:checked + .slider { background: #2d6ef6; }
+    input:checked + .slider:before { transform: translateX(20px); }
+    /* Timezone */
+    .timezone-select { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+    .timezone-select:focus { border-color: #2d6ef6; }
+    .btn-save { padding: 10px 18px; background: #2d6ef6; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; margin-top: 8px; }
+    .btn-save:hover { background: #1a5ae0; }
+    .save-result { font-size: 13px; color: #4caf50; margin-top: 6px; display: none; }
+    /* Withdrawal */
+    .btn-withdrawal { padding: 10px 18px; background: #fff; color: #e53e3e; border: 1px solid #e53e3e; border-radius: 8px; font-size: 13px; cursor: pointer; }
+    .btn-withdrawal:hover { background: #fff5f5; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); align-items: center; justify-content: center; z-index: 100; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #fff; border-radius: 12px; padding: 28px 32px; width: 360px; }
+    .modal h3 { font-size: 16px; font-weight: 700; color: #222; margin-bottom: 10px; }
+    .modal p { font-size: 13px; color: #666; margin-bottom: 20px; }
+    .modal-btns { display: flex; gap: 10px; }
+    .btn-cancel-withdrawal { flex: 1; padding: 12px; background: #f0f0f0; color: #444; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; }
+    .btn-confirm-withdrawal { flex: 1; padding: 12px; background: #e53e3e; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <div class="logo">🎮 GamePortal</div>
+  <nav>
+    <a href="main.html">홈</a>
+    <a href="account-info.html" class="active" data-qa="nav-account-info">계정정보</a>
+    <a href="account-security.html" data-qa="nav-account-security">계정보안</a>
+  </nav>
+  <div class="user-menu">
+    <span data-qa="username-display">test@gameportal.com</span>
+    <a href="login.html" data-qa="btn-logout">로그아웃</a>
+  </div>
+</div>
+
+<div class="content" data-qa="account-info-page">
+  <h1>계정정보</h1>
+
+  <!-- 기본 정보 -->
+  <div class="section-card" data-qa="section-basic-info">
+    <h2>기본 정보</h2>
+    <div class="info-row">
+      <span class="info-label">이메일</span>
+      <span class="info-value" data-qa="account-email">test@gameportal.com</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">가입일</span>
+      <span class="info-value" data-qa="account-created-at">2024-01-15</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">계정 상태</span>
+      <span class="info-value" data-qa="account-status">정상</span>
+    </div>
+  </div>
+
+  <!-- 보안키 검증 -->
+  <div class="section-card" data-qa="section-security-key">
+    <h2>보안키 검증</h2>
+    <div class="security-key-field">
+      <input type="password" id="input-security-key" placeholder="보안키를 입력하세요" data-qa="input-security-key"/>
+      <button id="btn-verify-key" class="btn-verify" data-qa="btn-verify-key">확인</button>
+    </div>
+    <p id="verify-key-result" class="verify-result" data-qa="verify-key-result"></p>
+  </div>
+
+  <!-- 이벤트 정보 수신 동의 -->
+  <div class="section-card" data-qa="section-event-notification">
+    <h2>이벤트 정보 수신 동의</h2>
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">이메일 수신 동의</div>
+        <div class="toggle-status" id="event-notification-status" data-qa="event-notification-status">동의 안함</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-event-notification" data-qa="toggle-event-notification"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- 기준 시간대 -->
+  <div class="section-card" data-qa="section-timezone">
+    <h2>기준 시간대</h2>
+    <select id="select-timezone" class="timezone-select" data-qa="select-timezone">
+      <option value="Asia/Seoul">(UTC+9) 서울</option>
+      <option value="Asia/Tokyo">(UTC+9) 도쿄</option>
+      <option value="America/New_York">(UTC-5) 뉴욕</option>
+      <option value="Europe/London">(UTC+0) 런던</option>
+      <option value="America/Los_Angeles">(UTC-8) 로스앤젤레스</option>
+    </select>
+    <br/>
+    <button id="btn-save-timezone" class="btn-save" data-qa="btn-save-timezone">저장</button>
+    <p id="timezone-save-result" class="save-result" data-qa="timezone-save-result">시간대가 저장되었습니다.</p>
+  </div>
+
+  <!-- 회원탈퇴 -->
+  <div class="section-card" data-qa="section-withdrawal">
+    <h2>회원 탈퇴</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:12px;">탈퇴 시 모든 게임 데이터와 구매 내역이 삭제됩니다.</p>
+    <button id="btn-withdrawal" class="btn-withdrawal" data-qa="btn-withdrawal">회원 탈퇴 신청</button>
+  </div>
+</div>
+
+<!-- 회원탈퇴 모달 -->
+<div class="modal-overlay" id="modal-withdrawal" data-qa="modal-withdrawal">
+  <div class="modal">
+    <h3>정말 탈퇴하시겠습니까?</h3>
+    <p>탈퇴 후에는 계정을 복구할 수 없으며, 모든 데이터가 삭제됩니다.</p>
+    <div class="modal-btns">
+      <button id="btn-cancel-withdrawal" class="btn-cancel-withdrawal" data-qa="btn-cancel-withdrawal">취소</button>
+      <button id="btn-confirm-withdrawal" class="btn-confirm-withdrawal" data-qa="btn-confirm-withdrawal">탈퇴 신청</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Security key
+  const VALID_KEY = 'secret123';
+  document.getElementById('btn-verify-key').addEventListener('click', function() {
+    const val = document.getElementById('input-security-key').value;
+    const el = document.getElementById('verify-key-result');
+    if (val === VALID_KEY) {
+      el.textContent = '보안키가 확인되었습니다.'; el.className = 'verify-result success';
+    } else {
+      el.textContent = '보안키가 올바르지 않습니다.'; el.className = 'verify-result error';
+    }
+  });
+
+  // Event notification toggle
+  document.getElementById('toggle-event-notification').addEventListener('change', function() {
+    document.getElementById('event-notification-status').textContent = this.checked ? '동의함' : '동의 안함';
+  });
+
+  // Timezone save
+  document.getElementById('btn-save-timezone').addEventListener('click', function() {
+    const el = document.getElementById('timezone-save-result');
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 2000);
+  });
+
+  // Withdrawal modal
+  document.getElementById('btn-withdrawal').addEventListener('click', function() {
+    document.getElementById('modal-withdrawal').classList.add('active');
+  });
+  document.getElementById('btn-cancel-withdrawal').addEventListener('click', function() {
+    document.getElementById('modal-withdrawal').classList.remove('active');
+  });
+  document.getElementById('btn-confirm-withdrawal').addEventListener('click', function() {
+    document.getElementById('modal-withdrawal').classList.remove('active');
+    window.location.href = 'login.html';
+  });
+</script>
+</body>
+</html>
