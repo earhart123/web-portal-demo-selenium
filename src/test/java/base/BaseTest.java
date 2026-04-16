@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BaseTest {
-    protected static final String BASE_URL = "https://earhart123.github.io/web-portal-demo-selenium";
+    public static final String BASE_URL = "https://earhart123.github.io/web-portal-demo-selenium";
 
     protected WebDriver driver;
     protected JavascriptExecutor js;
