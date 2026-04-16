@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -12,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BaseTest {
+    protected static final String BASE_URL = "https://earhart123.github.io/web-portal-demo-selenium";
+
     protected WebDriver driver;
     protected JavascriptExecutor js;
     protected WebDriverWait wait;
@@ -19,7 +22,13 @@ public class BaseTest {
 
     @Before
     public void setUp() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        if ("true".equalsIgnoreCase(System.getenv("HEADLESS"))) {
+            options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+        }
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         js = (JavascriptExecutor) driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));

@@ -1,5 +1,6 @@
 package pages.login;
 
+import base.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -7,21 +8,21 @@ public class LoginPage {
 
     private WebDriver driver;
 
-    private By title = By.cssSelector(".text-align-center");
-    private By loginBtn = By.id("loginBtn");
-    private By email = By.cssSelector(".input-item:nth-child(2) label");
-    private By emailInput = By.id("email");
-    private By password = By.cssSelector(".pw > label");
-    private By passwordInput = By.id("password");
-    private By resetPasswordBtn = By.linkText("비밀번호 재설정");
-    private By errorTip = By.cssSelector(".error-tip");
+    private By title = By.tagName("h1");
+    private By loginBtn = By.cssSelector("[data-qa='login-submit']");
+    private By emailLabel = By.cssSelector("label[for='email']");
+    private By emailInput = By.cssSelector("[data-qa='login-email']");
+    private By passwordLabel = By.cssSelector("label[for='password']");
+    private By passwordInput = By.cssSelector("[data-qa='login-password']");
+    private By resetPasswordBtn = By.cssSelector("[data-qa='link-password-reset']");
+    private By errorTip = By.cssSelector("[data-qa='login-error']");
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
 
     public void open() {
-        driver.get("https://accounts.example.com/member/login");
+        driver.get(BaseTest.BASE_URL + "/login.html");
     }
 
 
@@ -52,7 +53,7 @@ public class LoginPage {
     // ===== 이메일 =====
 
     public String getEmail() {
-        return driver.findElement(email).getText();
+        return driver.findElement(emailLabel).getText();
     }
 
     public void fillEmail(String email) {
@@ -63,7 +64,7 @@ public class LoginPage {
     // ===== 비밀번호 =====
 
     public String getPassword() {
-        return driver.findElement(password).getText();
+        return driver.findElement(passwordLabel).getText();
     }
 
     public void fillPassword(String password) {

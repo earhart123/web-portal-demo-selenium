@@ -7,7 +7,7 @@ public class ResetPasswordPage {
 
     private WebDriver driver;
 
-    private By title = By.cssSelector(".hx > .title");
+    private By title = By.tagName("h1");
 
     public ResetPasswordPage(WebDriver driver) {
         this.driver = driver;

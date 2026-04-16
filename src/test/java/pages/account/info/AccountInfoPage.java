@@ -1,7 +1,9 @@
 package pages.account.info;
 
+import base.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -11,32 +13,40 @@ public class AccountInfoPage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    private By title = By.cssSelector(".underline");
-    private By accountTitle = By.cssSelector("li:nth-child(1) > em");
-    private By accountText = By.cssSelector("li:nth-child(1) > .detail > p:nth-child(1)");
-    private By signupTime = By.cssSelector("li:nth-child(1) p:nth-child(2)");
-    private By signupRegion = By.cssSelector("li:nth-child(1) p:nth-child(3)");
-    private By nicknameTitle = By.cssSelector("li:nth-child(2) > em");
-    private By nickname = By.cssSelector("li:nth-child(2) > .detail > span");
-    private By nameTitle = By.cssSelector("li:nth-child(3) > em");
-    private By name = By.cssSelector("form > span");
-    private By birthTitle = By.cssSelector("li:nth-child(4) > em");
-    private By birth = By.cssSelector("div:nth-child(1) > span");
-    private By identifyTitle = By.cssSelector("li:nth-child(5) > em");
-    private By identify = By.cssSelector(".detail > .blue");
-    private By recentLoginInfoTitle = By.cssSelector("li:nth-child(6) > em");
-    private By recentIP = By.cssSelector("li:nth-child(6) p:nth-child(2)");
-    private By recentRegion = By.cssSelector("li:nth-child(6) p:nth-child(3)");
-    private By receiveEventInfoTitle = By.cssSelector(".title > em");
-    private By receiveEventInfoSubText = By.cssSelector(".mt-1");
-    private By receiveEventInfoToggle = By.id("checkboxLabel");
-    private By timezoneTitle = By.cssSelector(".timezone > em");
-    private By timezoneUTC = By.cssSelector(".radio-btn:nth-child(2) > span");
-    private By timezoneKorea = By.cssSelector(".radio-btn:nth-child(1) > span");
-    private By modalTitle = By.cssSelector("#WebportalModal .title");
-    private By modalText = By.cssSelector(".desc > strong");
-    private By modalBtn = By.cssSelector("#WebportalModal .btn");
-    private By withdrawBtn = By.linkText("Webportal 회원 탈퇴");
+    private By title = By.cssSelector("[data-qa='account-info-page'] h1");
+
+    // 기본 정보
+    private By basicInfoTitle = By.cssSelector("[data-qa='section-basic-info'] h2");
+    private By accountEmail = By.cssSelector("[data-qa='account-email']");
+    private By accountCreatedAt = By.cssSelector("[data-qa='account-created-at']");
+    private By accountStatus = By.cssSelector("[data-qa='account-status']");
+
+    // 보안키 검증
+    private By securityKeyTitle = By.cssSelector("[data-qa='section-security-key'] h2");
+    private By securityKeyInput = By.cssSelector("[data-qa='input-security-key']");
+    private By verifyKeyBtn = By.cssSelector("[data-qa='btn-verify-key']");
+    private By verifyKeyResult = By.cssSelector("[data-qa='verify-key-result']");
+
+    // 이벤트 정보 수신 동의
+    private By eventNotificationTitle = By.cssSelector("[data-qa='section-event-notification'] h2");
+    private By eventNotificationStatus = By.cssSelector("[data-qa='event-notification-status']");
+    private By toggleEventNotification = By.cssSelector("[data-qa='toggle-event-notification']");
+
+    // 기준 시간대
+    private By timezoneTitle = By.cssSelector("[data-qa='section-timezone'] h2");
+    private By timezoneSelect = By.cssSelector("[data-qa='select-timezone']");
+    private By saveTimezoneBtn = By.cssSelector("[data-qa='btn-save-timezone']");
+    private By timezoneSaveResult = By.cssSelector("[data-qa='timezone-save-result']");
+
+    // 회원 탈퇴
+    private By withdrawalTitle = By.cssSelector("[data-qa='section-withdrawal'] h2");
+    private By withdrawBtn = By.cssSelector("[data-qa='btn-withdrawal']");
+
+    // 탈퇴 모달
+    private By modalTitle = By.cssSelector("[data-qa='modal-withdrawal'] h3");
+    private By modalText = By.cssSelector("[data-qa='modal-withdrawal'] p");
+    private By cancelWithdrawBtn = By.cssSelector("[data-qa='btn-cancel-withdrawal']");
+    private By confirmWithdrawBtn = By.cssSelector("[data-qa='btn-confirm-withdrawal']");
 
     public AccountInfoPage(WebDriver driver) {
         this.driver = driver;
@@ -44,9 +54,10 @@ public class AccountInfoPage {
     }
 
 
-    // ===== 공통 기능 =====
+    // ===== 공통 =====
+
     public void open() {
-        driver.get("https://accounts.webportal.com/member/manage/account/info?countryCode=KR");
+        driver.get(BaseTest.BASE_URL + "/account-info.html");
     }
 
     public String getTitle() {
@@ -54,116 +65,93 @@ public class AccountInfoPage {
     }
 
 
-    // ===== 계정 =====
-    public String getAccountTitle() {
-        return driver.findElement(accountTitle).getText();
+    // ===== 기본 정보 =====
+
+    public String getBasicInfoTitle() {
+        return driver.findElement(basicInfoTitle).getText();
     }
 
-    public String getAccountText() {
-        return driver.findElement(accountText).getText();
+    public String getAccountEmail() {
+        return driver.findElement(accountEmail).getText();
     }
 
-    public String getSignupTime() {
-        return driver.findElement(signupTime).getText();
+    public String getAccountCreatedAt() {
+        return driver.findElement(accountCreatedAt).getText();
     }
 
-    public String getSignupRegion() {
-        return driver.findElement(signupRegion).getText();
-    }
-
-
-    // ===== 닉네임 =====
-    public String getNicknameTitle() {
-        return driver.findElement(nicknameTitle).getText();
-    }
-
-    public String getNickname() {
-        return driver.findElement(nickname).getText();
+    public String getAccountStatus() {
+        return driver.findElement(accountStatus).getText();
     }
 
 
-    // ===== 이름 =====
-    public String getNameTitle() {
-        return driver.findElement(nameTitle).getText();
+    // ===== 보안키 검증 =====
+
+    public String getSecurityKeyTitle() {
+        return driver.findElement(securityKeyTitle).getText();
     }
 
-    public String getName() {
-        return driver.findElement(name).getText();
+    public void fillSecurityKey(String key) {
+        driver.findElement(securityKeyInput).clear();
+        driver.findElement(securityKeyInput).sendKeys(key);
     }
 
-
-    // ===== 생년월일 =====
-    public String getBirthTitle() {
-        return driver.findElement(birthTitle).getText();
+    public String getVerifyKeyBtn() {
+        return driver.findElement(verifyKeyBtn).getText();
     }
 
-    public String getBirth() {
-        return driver.findElement(birth).getText();
+    public void clickVerifyKey() {
+        driver.findElement(verifyKeyBtn).click();
     }
 
-
-    // ===== 본인확인 =====
-    public String getIdentifyTitle() {
-        return driver.findElement(identifyTitle).getText();
-    }
-
-    public String getIdentify() {
-        return driver.findElement(identify).getText();
+    public String getVerifyKeyResult() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(verifyKeyResult));
+        return driver.findElement(verifyKeyResult).getText();
     }
 
 
-    // ===== 최근 로그인 정보 =====
-    public String getRecentLoginInfoTitle() {
-        return driver.findElement(recentLoginInfoTitle).getText();
+    // ===== 이벤트 정보 수신 동의 =====
+
+    public String getEventNotificationTitle() {
+        return driver.findElement(eventNotificationTitle).getText();
     }
 
-    public String getRecentIP() {
-        return driver.findElement(recentIP).getText();
-    }
-
-    public String getRecentRegion() {
-        return driver.findElement(recentRegion).getText();
-    }
-
-
-    // ===== 이벤트 정보 수신 =====
-    public String getReceiveEventInfoTitle() {
-        return driver.findElement(receiveEventInfoTitle).getText();
-    }
-
-    public String getReceiveEventInfoSubText() {
-        return driver.findElement(receiveEventInfoSubText).getText();
+    public String getEventNotificationStatus() {
+        return driver.findElement(eventNotificationStatus).getText();
     }
 
     public void clickEventInfoToggle() {
-        driver.findElement(receiveEventInfoToggle).click();
+        driver.findElement(toggleEventNotification).click();
     }
 
 
-    // ===== 시간대 설정 =====
+    // ===== 기준 시간대 =====
+
     public String getTimezoneTitle() {
         return driver.findElement(timezoneTitle).getText();
     }
 
-    public String getTimezoneUTC() {
-        return driver.findElement(timezoneUTC).getText();
+    public void selectTimezone(String value) {
+        org.openqa.selenium.support.ui.Select select = new org.openqa.selenium.support.ui.Select(driver.findElement(timezoneSelect));
+        select.selectByValue(value);
     }
 
-    public void clickTimezoneUTC() {
-        driver.findElement(timezoneUTC).click();
+    public void clickSaveTimezone() {
+        driver.findElement(saveTimezoneBtn).click();
     }
 
-    public String getTimezoneKorea() {
-        return driver.findElement(timezoneKorea).getText();
-    }
-
-    public void clickTimezoneKorea() {
-        driver.findElement(timezoneKorea).click();
+    public String getTimezoneSaveResult() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(timezoneSaveResult));
+        return driver.findElement(timezoneSaveResult).getText();
     }
 
 
-    // ===== 회원탈퇴 =====
-    public String getWithdrawBtn() {
+    // ===== 회원 탈퇴 =====
+
+    public String getWithdrawalTitle() {
+        return driver.findElement(withdrawalTitle).getText();
+    }
+
+    public String getWithdrawBtnText() {
         return driver.findElement(withdrawBtn).getText();
     }
 
@@ -172,8 +160,10 @@ public class AccountInfoPage {
     }
 
 
-    // ===== 모달 =====
+    // ===== 탈퇴 모달 =====
+
     public String getModalTitle() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(modalTitle));
         return driver.findElement(modalTitle).getText();
     }
 
@@ -181,7 +171,19 @@ public class AccountInfoPage {
         return driver.findElement(modalText).getText();
     }
 
-    public void clickModalBtn() {
-        driver.findElement(modalBtn).click();
+    public String getCancelWithdrawBtnText() {
+        return driver.findElement(cancelWithdrawBtn).getText();
+    }
+
+    public String getConfirmWithdrawBtnText() {
+        return driver.findElement(confirmWithdrawBtn).getText();
+    }
+
+    public void clickCancelWithdraw() {
+        driver.findElement(cancelWithdrawBtn).click();
+    }
+
+    public void clickConfirmWithdraw() {
+        driver.findElement(confirmWithdrawBtn).click();
     }
 }
