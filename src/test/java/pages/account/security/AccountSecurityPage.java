@@ -1,50 +1,49 @@
 package pages.account.security;
 
+import base.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class AccountSecurityPage {
 
     private WebDriver driver;
+    private WebDriverWait wait;
 
-    private By title = By.cssSelector(".underline");
-    private By passwordTitle = By.cssSelector("li:nth-child(1) em");
-    private By passwordDate = By.cssSelector("li:nth-child(1) p");
-    private By passwordBtn = By.cssSelector("#btnPasswordCheck > span:nth-child(1)");
-    private By secureKeyTitle = By.cssSelector("li:nth-child(2) em");
-    private By secureKeyDate = By.cssSelector("li:nth-child(2) p");
-    private By secureKeyBtn = By.cssSelector("#btnSecurekeyCheck > span:nth-child(1)");
-    private By otpTitle = By.cssSelector(".d-flex > em");
-    private By otpSubText = By.cssSelector("li:nth-child(3) p");
-    private By otpBtn = By.cssSelector("#btnOTPUnregist > span:nth-child(1)");
-    private By loginHistoryTitle = By.cssSelector("li:nth-child(4) em");
-    private By loginHistorySubText = By.cssSelector("li:nth-child(4) p");
-    private By loginHistoryBtn = By.cssSelector("#btnLoginHistory > span:nth-child(1)");
-    private By currentLoginTitle = By.cssSelector("li:nth-child(5) em");
-    private By currentLoginSubText = By.cssSelector("li:nth-child(5) p");
-    private By currentLoginBtn = By.cssSelector("#btnSessionCheck > span:nth-child(1)");
-    private By overseasLoginTitle = By.cssSelector("li:nth-child(6) em");
-    private By overseasLoginSubText = By.cssSelector("li:nth-child(6) p");
-    private By overseasLoginToggle = By.cssSelector("#regionIpOn > span");
-    private By overseasAllowModalTitle = By.cssSelector("#checkOn .title");
-    private By overseasAllowModalSubText = By.cssSelector("#checkOn .text-align-left:nth-child(1)");
-    private By overseasAllowModalText = By.cssSelector("#checkOn .desc > .text-align-left:nth-child(2)");
-    private By overseasAllowModalBtn = By.cssSelector("#checkOn .btn");
-    private By overseasBlockModalTitle = By.cssSelector("#checkOff .title");
-    private By overseasBlockModalSubText = By.cssSelector("#checkOff .text-align-left:nth-child(1)");
-    private By overseasBlockModalText = By.cssSelector(".blue-second");
-    private By overseasBlockModalBtn = By.cssSelector("#checkOff .btn-wrap span");
+    private By title = By.cssSelector("[data-qa='account-security-page'] h1");
+
+    // 해외 로그인 설정
+    private By overseasLoginTitle = By.cssSelector("[data-qa='section-overseas-login'] h2");
+    private By overseasLoginStatusBadge = By.cssSelector("[data-qa='overseas-login-status-badge']");
+    private By overseasLoginToggle = By.cssSelector("[data-qa='toggle-overseas-login']");
+    private By overseasLoginStatus = By.cssSelector("[data-qa='overseas-login-status']");
+
+    // 최근 로그인 이력
+    private By loginHistoryTitle = By.cssSelector("[data-qa='section-login-history'] h2");
+    private By loginHistoryList = By.cssSelector("[data-qa='login-history-list']");
+
+    // 비밀번호 변경
+    private By changePasswordTitle = By.cssSelector("[data-qa='section-change-password'] h2");
+    private By currentPasswordInput = By.cssSelector("[data-qa='current-password']");
+    private By newPasswordInput = By.cssSelector("[data-qa='new-password']");
+    private By newPasswordConfirmInput = By.cssSelector("[data-qa='new-password-confirm']");
+    private By changePasswordBtn = By.cssSelector("[data-qa='btn-change-password']");
+    private By changePasswordResult = By.cssSelector("[data-qa='change-password-result']");
 
 
     public AccountSecurityPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
 
     // ===== 공통 기능 =====
 
     public void open() {
-        driver.get("https://accounts.webportal.com/member/manage/security");
+        driver.get(BaseTest.BASE_URL + "/account-security.html");
     }
 
     public String getTitle() {
@@ -52,158 +51,61 @@ public class AccountSecurityPage {
     }
 
 
-    // ===== 비밀번호 =====
-
-    public String getPasswordTitle() {
-        return driver.findElement(passwordTitle).getText();
-    }
-
-    public String getPasswordDate() {
-        return driver.findElement(passwordDate).getText();
-    }
-
-    public String getPasswordBtn() {
-        return driver.findElement(passwordBtn).getText();
-    }
-
-    public void clickPasswordBtn() {
-        driver.findElement(passwordBtn).click();
-    }
-
-
-    // ===== 보안키 =====
-
-    public String getSecureKeyTitle() {
-        return driver.findElement(secureKeyTitle).getText();
-    }
-
-    public String getSecureKeyDate() {
-        return driver.findElement(secureKeyDate).getText();
-    }
-
-    public String getSecureKeyBtn() {
-        return driver.findElement(secureKeyBtn).getText();
-    }
-
-    public void clickSecureKeyBtn() {
-        driver.findElement(secureKeyBtn).click();
-    }
-
-
-    // ===== OTP =====
-
-    public String getOtpTitle() {
-        return driver.findElement(otpTitle).getText();
-    }
-
-    public String getOtpSubText() {
-        return driver.findElement(otpSubText).getText();
-    }
-
-    public String getOtpBtn() {
-        return driver.findElement(otpBtn).getText();
-    }
-
-    public void clickOtpBtn() {
-        driver.findElement(otpBtn).click();
-    }
-
-
-    // ===== 로그인 기록 =====
-
-    public String getLoginHistoryTitle() {
-        return driver.findElement(loginHistoryTitle).getText();
-    }
-
-    public String getLoginHistorySubText() {
-        return driver.findElement(loginHistorySubText).getText();
-    }
-
-    public String getLoginHistoryBtn() {
-        return driver.findElement(loginHistoryBtn).getText();
-    }
-
-    public void clickLoginHistoryBtn() {
-        driver.findElement(loginHistoryBtn).click();
-    }
-
-
-    // ===== 현재 로그인 정보 =====
-
-    public String getCurrentLoginTitle() {
-        return driver.findElement(currentLoginTitle).getText();
-    }
-
-    public String getCurrentLoginSubText() {
-        return driver.findElement(currentLoginSubText).getText();
-    }
-
-    public String getCurrentLoginBtn() {
-        return driver.findElement(currentLoginBtn).getText();
-    }
-
-    public void clickCurrentLoginBtn() {
-        driver.findElement(currentLoginBtn).click();
-    }
-
-
-    // ===== 해외 로그인 허용 =====
+    // ===== 해외 로그인 설정 =====
 
     public String getOverseasLoginTitle() {
         return driver.findElement(overseasLoginTitle).getText();
     }
 
-    public String getOverseasLoginSubText() {
-        return driver.findElement(overseasLoginSubText).getText();
+    public String getOverseasLoginStatusBadge() {
+        return driver.findElement(overseasLoginStatusBadge).getText();
     }
 
     public void clickOverseasLoginToggle() {
         driver.findElement(overseasLoginToggle).click();
     }
 
-
-    // ===== 해외 로그인 허용 모달 =====
-
-    public String getOverseasAllowModalTitle() {
-        return driver.findElement(overseasAllowModalTitle).getText();
-    }
-
-    public String getOverseasAllowModalSubText() {
-        return driver.findElement(overseasAllowModalSubText).getText();
-    }
-
-    public String getOverseasAllowModalText() {
-        return driver.findElement(overseasAllowModalText).getText();
-    }
-
-    public String getOverseasAllowModalBtn() {
-        return driver.findElement(overseasAllowModalBtn).getText();
-    }
-
-    public void clickOverseasLoginOnModalBtn() {
-        driver.findElement(overseasAllowModalBtn).click();
+    public String getOverseasLoginStatus() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(overseasLoginStatus));
+        return driver.findElement(overseasLoginStatus).getText();
     }
 
 
-    // ===== 해외 로그인 차단 모달 =====
+    // ===== 최근 로그인 이력 =====
 
-    public String getOverseasBlockModalTitle() {
-        return driver.findElement(overseasBlockModalTitle).getText();
+    public String getLoginHistoryTitle() {
+        return driver.findElement(loginHistoryTitle).getText();
     }
 
-    public String getOverseasBlockModalSubText() {
-        return driver.findElement(overseasBlockModalSubText).getText();
+    public int getLoginHistoryCount() {
+        return driver.findElements(By.cssSelector("[data-qa='history-item']")).size();
     }
 
-    public String getOverseasBlockModalText() {
-        return driver.findElement(overseasBlockModalText).getText();
+
+    // ===== 비밀번호 변경 =====
+
+    public String getChangePasswordTitle() {
+        return driver.findElement(changePasswordTitle).getText();
     }
 
-    public String getOverseasBlockModalBtn() {
-        return driver.findElement(overseasBlockModalBtn).getText();
+    public void fillCurrentPassword(String password) {
+        driver.findElement(currentPasswordInput).sendKeys(password);
     }
 
-    public void clickOverseasLoginOffModalBtn() {
-        driver.findElement(overseasBlockModalBtn).click();
+    public void fillNewPassword(String password) {
+        driver.findElement(newPasswordInput).sendKeys(password);
+    }
+
+    public void fillNewPasswordConfirm(String password) {
+        driver.findElement(newPasswordConfirmInput).sendKeys(password);
+    }
+
+    public void clickChangePasswordBtn() {
+        driver.findElement(changePasswordBtn).click();
+    }
+
+    public String getChangePasswordResult() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(changePasswordResult));
+        return driver.findElement(changePasswordResult).getText();
     }
 }

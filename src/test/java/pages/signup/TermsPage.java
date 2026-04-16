@@ -1,5 +1,6 @@
 package pages.signup;
 
+import base.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -7,104 +8,85 @@ public class TermsPage {
 
     private WebDriver driver;
 
-    private By title = By.cssSelector(".title:nth-child(1)");
-    private By desc = By.cssSelector(".desc:nth-child(2)");
-    private By checkAll = By.cssSelector(".check-all > label");
-    private By over14 = By.id("agreement_over14");
-    private By under14 = By.cssSelector(".btn-underline");
-    private By under14NoBtn = By.cssSelector(".btn-line > span");
-    private By under14YesBtn = By.cssSelector("#agreement_under14 > span");
-    private By nextBtn = By.cssSelector(".btn-line");
-    private By terms1 = By.cssSelector(".checkbox:nth-child(2) > label");
-    private By terms2 = By.cssSelector(".checkbox:nth-child(3) > label");
-    private By terms3 = By.cssSelector(".checkbox:nth-child(4) > label");
+    private By title = By.cssSelector("[data-qa='step-terms'] h1");
+    private By checkAll = By.xpath("//input[@data-qa='agree-all']/following-sibling::span[1]");
+    private By checkAllInput = By.cssSelector("[data-qa='agree-all']");
+    private By agreeServiceLabel = By.xpath("//input[@data-qa='agree-service']/following-sibling::span[1]");
+    private By agreeServiceInput = By.cssSelector("[data-qa='agree-service']");
+    private By agreePrivacyLabel = By.xpath("//input[@data-qa='agree-privacy']/following-sibling::span[1]");
+    private By agreePrivacyInput = By.cssSelector("[data-qa='agree-privacy']");
+    private By agreeAgeLabel = By.xpath("//input[@data-qa='agree-age']/following-sibling::span[1]");
+    private By agreeAgeInput = By.cssSelector("[data-qa='agree-age']");
+    private By agreeMarketingLabel = By.xpath("//input[@data-qa='agree-marketing']/following-sibling::span[1]");
+    private By agreeMarketingInput = By.cssSelector("[data-qa='agree-marketing']");
+    private By nextBtn = By.cssSelector("[data-qa='btn-terms-next']");
 
     public TermsPage(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public void open() {
+        driver.get(BaseTest.BASE_URL + "/signup.html");
     }
 
     public String getTitle() {
         return driver.findElement(title).getText();
     }
 
-    public String getDesc() {
-        return driver.findElement(desc).getText();
-    }
 
-
-    // ===== 약관 =====
+    // ===== 전체 동의 =====
 
     public String getCheckAll() {
         return driver.findElement(checkAll).getText();
     }
 
     public void clickCheckAll() {
-        driver.findElement(checkAll).click();
+        driver.findElement(checkAllInput).click();
     }
 
+
+    // ===== 약관 항목 =====
+
     public String getTerms1() {
-        return driver.findElement(terms1).getText();
+        return driver.findElement(agreeServiceLabel).getText();
     }
 
     public String getTerms2() {
-        return driver.findElement(terms2).getText();
+        return driver.findElement(agreePrivacyLabel).getText();
     }
 
     public String getTerms3() {
-        return driver.findElement(terms3).getText();
+        return driver.findElement(agreeAgeLabel).getText();
+    }
+
+    public String getTerms4() {
+        return driver.findElement(agreeMarketingLabel).getText();
     }
 
     public void clickTerms1() {
-        driver.findElement(terms1).click();
+        driver.findElement(agreeServiceInput).click();
     }
 
     public void clickTerms2() {
-        driver.findElement(terms2).click();
+        driver.findElement(agreePrivacyInput).click();
     }
 
     public void clickTerms3() {
-        driver.findElement(terms3).click();
+        driver.findElement(agreeAgeInput).click();
+    }
+
+    public void clickTerms4() {
+        driver.findElement(agreeMarketingInput).click();
     }
 
 
-    // ===== 만 14세 이상 =====
+    // ===== 다음 버튼 =====
 
-    public String getOver14() {
-        return driver.findElement(over14).getText();
+    public String getNextBtn() {
+        return driver.findElement(nextBtn).getText();
     }
 
-    public void clickOver14() {
-        driver.findElement(over14).click();
-    }
-
-
-    // ===== 만 14세 미만 =====
-
-    public String getUnder14() {
-        return driver.findElement(under14).getText();
-    }
-
-    public String getUnder14Title() {
-        return driver.findElement(By.cssSelector(".active .title")).getText();
-    }
-
-    public String getUnder14SubText() {
-        return driver.findElement(By.cssSelector(".text-align-left:nth-child(1)")).getText();
-    }
-
-    public void clickUnder14() {
-        driver.findElement(under14).click();
-    }
-
-    public String getUnder14NoBtn() {
-        return driver.findElement(under14NoBtn).getText();
-    }
-
-    public void clickUnder14NoBtn() {
-        driver.findElement(under14NoBtn).click();
-    }
-
-    public String getUnder14YesBtn() {
-        return driver.findElement(under14YesBtn).getText();
+    public void clickNextBtn() {
+        driver.findElement(nextBtn).click();
     }
 }

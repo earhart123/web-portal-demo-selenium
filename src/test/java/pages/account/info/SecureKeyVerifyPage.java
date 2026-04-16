@@ -1,58 +1,40 @@
 package pages.account.info;
 
+import base.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class SecureKeyVerifyPage {
 
     private WebDriver driver;
+    private WebDriverWait wait;
 
-    private By title = By.cssSelector(".underline");
-    private By subText = By.cssSelector(".desc");
-    private By secureKeyTitle = By.cssSelector(".input-item > .title");
-    private By secureKeyInput = By.cssSelector("label");
-    private By errorTip = By.cssSelector(".error-tip");
-    private By confirmBtn = By.cssSelector(".btn-primary");
+    private By securityKeyInput = By.cssSelector("[data-qa='input-security-key']");
+    private By confirmBtn = By.cssSelector("[data-qa='btn-verify-key']");
+    private By verifyResult = By.cssSelector("[data-qa='verify-key-result']");
 
     public SecureKeyVerifyPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
 
     // ===== 공통 기능 =====
 
     public void open() {
-        driver.get("https://accounts.webportal.com/member/manage/account");
+        driver.get(BaseTest.BASE_URL + "/account-info.html");
     }
 
-    public String getTitle() {
-        return driver.findElement(title).getText();
-    }
-
-    public String getSubText() {
-        return driver.findElement(subText).getText();
-    }
 
     // ===== 보안키 =====
 
-    public String getSecureKeyTitle() {
-        return driver.findElement(secureKeyTitle).getText();
-    }
-
-    public String getSecureKeyInput() {
-        return driver.findElement(secureKeyInput).getText();
-    }
-
     public void fillSecureKey(String secureKey) {
-        driver.findElement(secureKeyInput).clear();
-        driver.findElement(secureKeyInput).sendKeys(secureKey);
-    }
-
-
-    // ===== 에러메시지 =====
-
-    public String getErrorMessage() {
-        return driver.findElement(errorTip).getText();
+        driver.findElement(securityKeyInput).clear();
+        driver.findElement(securityKeyInput).sendKeys(secureKey);
     }
 
 
@@ -64,5 +46,17 @@ public class SecureKeyVerifyPage {
 
     public void clickConfirmBtn() {
         driver.findElement(confirmBtn).click();
+    }
+
+
+    // ===== 검증 결과 =====
+
+    public String getVerifyResult() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(verifyResult));
+        return driver.findElement(verifyResult).getText();
+    }
+
+    public String getErrorMessage() {
+        return getVerifyResult();
     }
 }

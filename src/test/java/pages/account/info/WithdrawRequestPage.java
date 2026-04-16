@@ -1,52 +1,16 @@
 package pages.account.info;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * 데모 사이트에서는 회원탈퇴가 account-info.html 내 모달로 처리됩니다.
+ * WithdrawAgreePage를 통해 모달 상호작용을 수행합니다.
+ */
 public class WithdrawRequestPage {
 
     private WebDriver driver;
 
-    private By title = By.cssSelector(".underline");
-    private By subText = By.cssSelector(".desc");
-    private By secureKeyTitle = By.cssSelector(".input-item > .title");
-    private By secureKeyInput = By.cssSelector("label");
-    private By unregisterBtn = By.id("unreisterButton");
-
     public WithdrawRequestPage(WebDriver driver) {
         this.driver = driver;
-    }
-
-    // ===== 공통 기능 =====
-
-    public void open() {
-        driver.get("https://accounts.example.com/member/unregister/request");
-    }
-
-    public String getTitle() {
-        return driver.findElement(title).getText();
-    }
-
-    public String getSubText() {
-        return driver.findElement(subText).getText();
-    }
-
-
-    // ===== 보안키 =====
-
-    public void fillSecureKey(String secureKey) {
-        driver.findElement(secureKeyInput).clear();
-        driver.findElement(secureKeyInput).sendKeys(secureKey);
-    }
-
-
-    // ===== 신청 버튼 =====
-
-    public String getUnregisterBtn() {
-        return driver.findElement(unregisterBtn).getText();
-    }
-
-    public void clickUnregisterBtn() {
-        driver.findElement(unregisterBtn).click();
     }
 }

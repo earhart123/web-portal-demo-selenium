@@ -29,50 +29,41 @@ public class LoginTest extends BaseTest {
         assertThat(login.getEmail(), is("이메일"));
         assertThat(login.getPassword(), is("비밀번호"));
 
-        // 비밀번호 재설정
+        // 비밀번호 재설정 링크 확인 및 이동
         assertThat(login.getResetPasswordBtn(), is("비밀번호 재설정"));
         login.clickResetPasswordBtn();
         assertThat(resetPassword.getTitle(), is("비밀번호 재설정"));
 
-
-        // 로그인
+        // 로그인 페이지로 돌아오기
         login.open();
 
-        // 로그인 실패 > 비밀번호 불일치
-        login.fillEmail("example@gmail.com");
-        login.fillPassword("password");
-        login.clickLoginBtn();
-        assertThat(login.getErrorMessage(), is("WebPortal 계정 혹은 비밀번호가 일치하지 않습니다."));
-
-        // 로그인 성공
-        login.fillPassword("password7");
+        // 로그인 실패 > 잘못된 자격증명
+        login.fillEmail("wrong@test.com");
+        login.fillPassword("wrongpassword");
         assertThat(login.getLoginBtn(), is("로그인"));
         login.clickLoginBtn();
+        assertThat(login.getErrorMessage(), is("이메일 또는 비밀번호를 확인해주세요."));
     }
 
     @Test
     public void loginFail() {
 
-        LoginPage login = new LoginPage(driver);
-
         login.open();
 
-        login.fillEmail("example@gmail.com");
-        login.fillPassword("password");
+        login.fillEmail("wrong@test.com");
+        login.fillPassword("wrongpassword");
         login.clickLoginBtn();
-        assertThat(login.getErrorMessage(), is("WebPortal 계정 혹은 비밀번호가 일치하지 않습니다."));
+        assertThat(login.getErrorMessage(), is("이메일 또는 비밀번호를 확인해주세요."));
     }
 
     @Test
     public void loginSuccess() {
 
-        LoginPage login = new LoginPage(driver);
-
         login.open();
 
-        login.fillEmail("example@gmail.com");
-        login.fillPassword("password7");
+        login.fillEmail("test@gameportal.com");
+        login.fillPassword("Test1234!");
         login.clickLoginBtn();
-        assertThat(driver.getCurrentUrl(), is("https://www.example.com/"));
+        assertThat(driver.getCurrentUrl(), is(BASE_URL + "/main.html"));
     }
 }
