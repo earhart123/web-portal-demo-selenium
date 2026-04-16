@@ -2,7 +2,9 @@ package pages.account.info;
 
 import base.BaseTest;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -118,11 +120,11 @@ public class AccountInfoPage {
     public String getEventNotificationStatus() {
         return driver.findElement(eventNotificationStatus).getText();
     }
-
+    
     public void clickEventInfoToggle() {
-        driver.findElement(toggleEventNotification).click();
+    WebElement toggle = driver.findElement(toggleEventNotification);
+    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", toggle);
     }
-
 
     // ===== 기준 시간대 =====
 

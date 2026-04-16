@@ -2,7 +2,9 @@ package pages.account.security;
 
 import base.BaseTest;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -62,7 +64,8 @@ public class AccountSecurityPage {
     }
 
     public void clickOverseasLoginToggle() {
-        driver.findElement(overseasLoginToggle).click();
+    WebElement toggle = driver.findElement(overseasLoginToggle);
+    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", toggle);
     }
 
     public String getOverseasLoginStatus() {
